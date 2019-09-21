@@ -16,8 +16,5 @@ public class LoginPacket implements Packet {
     private String protocolName = "MsgLogin";
     private String id;
     private String desc;
-    private float x;
-    private float y;
-    private float z;
     private int result;
 }

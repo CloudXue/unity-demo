@@ -1,11 +1,15 @@
 package com.fingard.xuesl.unity.tank.server.handler;
 
-import cn.hutool.core.util.StrUtil;
-import com.fingard.xuesl.unity.online.protocol.ClientState;
+import com.fingard.xuesl.unity.tank.bean.ClientState;
+import com.fingard.xuesl.unity.tank.bean.Player;
+import com.fingard.xuesl.unity.tank.bean.PlayerData;
+import com.fingard.xuesl.unity.tank.bean.Room;
 import com.fingard.xuesl.unity.tank.protocol.LoginPacket;
+import com.fingard.xuesl.unity.tank.util.PlayerManager;
+import com.fingard.xuesl.unity.tank.util.RoomManager;
+import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
-import io.netty.util.ReferenceCountUtil;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Map;
@@ -20,7 +24,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 @Slf4j
 public class LoginHandler extends SimpleChannelInboundHandler<LoginPacket> {
-    public static Map<String, ClientState> clientMap = new ConcurrentHashMap<String, ClientState>(8);
+    public static Map<Channel, ClientState> clientMap = new ConcurrentHashMap<>(8);
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
@@ -32,15 +36,36 @@ public class LoginHandler extends SimpleChannelInboundHandler<LoginPacket> {
         ClientState clientState = new ClientState();
         clientState.setChannel(ctx.channel());
         clientState.setDesc(msg.getDesc());
-        clientState.setX(msg.getX());
-        clientState.setY(msg.getY());
-        clientState.setZ(msg.getZ());
-        clientMap.put(clientState.getDesc(), clientState);
-        for (Map.Entry<String, ClientState> entry : clientMap.entrySet()) {
-            ReferenceCountUtil.retain(msg);
-            entry.getValue().getChannel().writeAndFlush(msg);
-            log.info("send:" + clientState.getDesc());
+        //构建Player
+        Player player = new Player(clientState);
+        player.id = msg.getId();
+        PlayerData playerData = new PlayerData();
+        playerData.setWin(0);
+        playerData.setLost(0);
+        playerData.setCoin(0);
+        player.setData(playerData);
+        PlayerManager.addPlayer(msg.getId(), player);
+        clientState.setPlayer(player);
+
+        clientMap.put(ctx.channel(), clientState);
+        //返回协议
+        msg.setResult(0);
+        player.send(msg);
+    }
+
+    @Override
+    public void channelInactive(ChannelHandlerContext ctx) throws Exception {
+        ClientState clientState = LoginHandler.clientMap.get(ctx.channel());
+        Player player = clientState.getPlayer();
+        if (player == null) {
+            return;
         }
-        ReferenceCountUtil.release(msg);
+
+        int roomId = player.getRoomId();
+        if (roomId >= 0) {
+            Room room = RoomManager.getRoom(roomId);
+            room.removePlayer(player.getId());
+        }
+        PlayerManager.removePlayer(player.getId());
     }
 }

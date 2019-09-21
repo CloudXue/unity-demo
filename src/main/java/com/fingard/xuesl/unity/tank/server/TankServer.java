@@ -3,8 +3,7 @@ package com.fingard.xuesl.unity.tank.server;
 import com.fingard.xuesl.unity.tank.codec.MsgDecoder;
 import com.fingard.xuesl.unity.tank.codec.MsgEncoder;
 import com.fingard.xuesl.unity.tank.codec.Spliter;
-import com.fingard.xuesl.unity.tank.server.handler.LoginHandler;
-import com.fingard.xuesl.unity.tank.server.handler.MoveHandler;
+import com.fingard.xuesl.unity.tank.server.handler.*;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -39,6 +38,12 @@ public class TankServer {
                             p.addLast(new MsgDecoder());
                             p.addLast(new LoginHandler());
                             p.addLast(new MoveHandler());
+                            p.addLast(new GetAchieveHandler());
+                            p.addLast(new CreateRoomHandler());
+                            p.addLast(new EnterRoomHandler());
+                            p.addLast(new GetRoomListHandler());
+                            p.addLast(new GetRoomInfoHandler());
+                            p.addLast(new LeaveRoomHandler());
                         }
                     });
 

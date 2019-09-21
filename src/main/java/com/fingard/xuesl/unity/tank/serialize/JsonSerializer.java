@@ -1,9 +1,7 @@
 package com.fingard.xuesl.unity.tank.serialize;
 
 import com.alibaba.fastjson.JSON;
-import com.fingard.xuesl.unity.tank.protocol.LoginPacket;
-import com.fingard.xuesl.unity.tank.protocol.MovePacket;
-import com.fingard.xuesl.unity.tank.protocol.Packet;
+import com.fingard.xuesl.unity.tank.protocol.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -22,6 +20,12 @@ public class JsonSerializer {
         packetTypeMap = new HashMap<>();
         packetTypeMap.put("MsgMove", MovePacket.class);
         packetTypeMap.put("MsgLogin", LoginPacket.class);
+        packetTypeMap.put("MsgGetAchieve", GetAchievePacket.class);
+        packetTypeMap.put("MsgCreateRoom", CreateRoomPacket.class);
+        packetTypeMap.put("MsgEnterRoom", EnterRoomPacket.class);
+        packetTypeMap.put("MsgGetRoomInfo", GetRoomInfoPacket.class);
+        packetTypeMap.put("MsgGetRoomList", GetRoomListPacket.class);
+        packetTypeMap.put("MsgLeaveRoom", LeaveRoomPacket.class);
     }
 
     public static byte[] serialize(Packet packet) {

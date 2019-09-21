@@ -1,6 +1,7 @@
-package com.fingard.xuesl.unity.tank.protocol;
+package com.fingard.xuesl.unity.tank.bean;
 
 import io.netty.channel.Channel;
+import lombok.Data;
 
 /**
  * 功能说明: <br>
@@ -9,12 +10,9 @@ import io.netty.channel.Channel;
  * 开发时间: 2019/9/15/015<br>
  * <br>
  */
+@Data
 public class ClientState {
     private Channel channel;
     private String desc;
-    private int hp = -100;
-    private float x;
-    private float y;
-    private float z;
-    private float eulY;
+    private Player player;
 }
