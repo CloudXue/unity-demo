@@ -30,6 +30,10 @@ public class JsonSerializer {
         packetTypeMap.put("MsgEnterBattle", EnterBattlePacket.class);
         packetTypeMap.put("MsgLeaveBattle", LeaveBattlePacket.class);
         packetTypeMap.put("MsgStartBattle", StartBattlePacket.class);
+        packetTypeMap.put("MsgSyncTank", SyncTankPacket.class);
+        packetTypeMap.put("MsgFire", FirePacket.class);
+        packetTypeMap.put("MsgHit", HitPacket.class);
+
     }
 
     public static byte[] serialize(Packet packet) {

@@ -36,14 +36,14 @@ public class Room {
 
     public static float[][][] birthConfig = {
             {
-                    {-20f, 5f, -20f, 0, 0, 0},
-                    {-30f, 5f, -30f, 0, 0, 0},
-                    {-40f, 5f, -40f, 0, 0, 0}
+                    {-20f, 0f, -20f, 0, 0, 0},
+                    {-30f, 0f, -30f, 0, 0, 0},
+                    {-40f, 0f, -40f, 0, 0, 0}
             },
             {
-                    {20f, 5f, 20f, 0, 0, 0},
-                    {30f, 5f, 30f, 0, 0, 0},
-                    {40f, 5f, 40f, 0, 0, 0}
+                    {20f, 0f, 20f, 0, 0, 0},
+                    {30f, 0f, 30f, 0, 0, 0},
+                    {40f, 0f, 40f, 0, 0, 0}
             }
     };
 
@@ -291,7 +291,6 @@ public class Room {
 
     //定时更新
     public void update() {
-        log.info("room update:" + id);
         //状态判断
         if (status != Status.FIGHT.getValue()) {
             return;

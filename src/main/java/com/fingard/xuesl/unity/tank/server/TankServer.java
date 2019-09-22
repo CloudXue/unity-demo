@@ -51,6 +51,9 @@ public class TankServer {
                             p.addLast(new GetRoomInfoHandler());
                             p.addLast(new LeaveRoomHandler());
                             p.addLast(new StartBattleHandler());
+                            p.addLast(new SyncTankHandler());
+                            p.addLast(new FireHandler());
+                            p.addLast(new HitHandler());
                         }
                     });
 

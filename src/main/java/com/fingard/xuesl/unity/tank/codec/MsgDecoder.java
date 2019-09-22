@@ -20,15 +20,18 @@ import java.util.List;
 @Slf4j
 public class MsgDecoder extends MessageToMessageDecoder<ByteBuf> {
     protected void decode(ChannelHandlerContext channelHandlerContext, ByteBuf byteBuf, List<Object> list) throws Exception {
+        log.info("收到消息：" + byteBuf.toString(Charset.forName("UTF-8")));
         //解析数据包长度
-        byte[] packetLengthBytes = new byte[2];
-        byteBuf.readBytes(packetLengthBytes);
-        int packetLength = packetLengthBytes[1] << 8 | packetLengthBytes[0];
+//        byte[] packetLengthBytes = new byte[2];
+//        byteBuf.readBytes(packetLengthBytes);
+//        int packetLength = packetLengthBytes[1] << 8 | packetLengthBytes[0];
+        int packetLength = byteBuf.readUnsignedShortLE();
 
         //解析协议名
-        byte[] nameLengthBytes = new byte[2];
-        byteBuf.readBytes(nameLengthBytes);
-        int nameLength = nameLengthBytes[1] << 8 | nameLengthBytes[0];
+//        byte[] nameLengthBytes = new byte[2];
+//        byteBuf.readBytes(nameLengthBytes);
+//        int nameLength = nameLengthBytes[1] << 8 | nameLengthBytes[0];
+        int nameLength = byteBuf.readUnsignedShortLE();
         String name = byteBuf.readBytes(nameLength).toString(Charset.forName("UTF-8"));
         log.info("接收到的报文为：" + name);
 

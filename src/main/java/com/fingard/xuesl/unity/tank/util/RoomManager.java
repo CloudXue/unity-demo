@@ -65,7 +65,6 @@ public class RoomManager {
     }
 
     public static void update() {
-        log.info("RoomManager update");
         for (Room room : rooms.values()) {
             room.update();
         }
