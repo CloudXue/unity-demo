@@ -25,6 +25,10 @@ public class Player {
     public float x;
     public float y;
     public float z;
+
+    public float ex;
+    public float ey;
+    public float ez;
     //在哪个房间
     public int roomId = -1;
     //阵营

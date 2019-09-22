@@ -57,6 +57,7 @@ public class LoginHandler extends SimpleChannelInboundHandler<LoginPacket> {
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
         ClientState clientState = LoginHandler.clientMap.get(ctx.channel());
         Player player = clientState.getPlayer();
+        log.info("客户端断开连接：" + player.getId());
         if (player == null) {
             return;
         }

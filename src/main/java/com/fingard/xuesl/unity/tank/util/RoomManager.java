@@ -4,6 +4,7 @@ import com.fingard.xuesl.unity.tank.bean.Room;
 import com.fingard.xuesl.unity.tank.bean.RoomInfo;
 import com.fingard.xuesl.unity.tank.protocol.GetRoomListPacket;
 import com.fingard.xuesl.unity.tank.protocol.Packet;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -16,6 +17,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * 开发时间: 2019/9/21/021<br>
  * <br>
  */
+@Slf4j
 public class RoomManager {
     //最大id
     private static int maxId = 1;
@@ -60,5 +62,12 @@ public class RoomManager {
             packet.rooms.add(roomInfo);
         }
         return packet;
+    }
+
+    public static void update() {
+        log.info("RoomManager update");
+        for (Room room : rooms.values()) {
+            room.update();
+        }
     }
 }

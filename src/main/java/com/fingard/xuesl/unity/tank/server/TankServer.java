@@ -4,6 +4,7 @@ import com.fingard.xuesl.unity.tank.codec.MsgDecoder;
 import com.fingard.xuesl.unity.tank.codec.MsgEncoder;
 import com.fingard.xuesl.unity.tank.codec.Spliter;
 import com.fingard.xuesl.unity.tank.server.handler.*;
+import com.fingard.xuesl.unity.tank.util.RoomManager;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -11,6 +12,10 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
+
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 /**
  * 功能说明: <br>
@@ -23,6 +28,7 @@ public class TankServer {
     public static void main(String[] args) throws InterruptedException {
         EventLoopGroup bossGroup = new NioEventLoopGroup(1);
         EventLoopGroup workerGroup = new NioEventLoopGroup();
+        Executors.newScheduledThreadPool(10).scheduleAtFixedRate(RoomManager::update, 2, 2, TimeUnit.SECONDS);
         try {
             ServerBootstrap b = new ServerBootstrap();
             b.group(bossGroup, workerGroup)
@@ -44,6 +50,7 @@ public class TankServer {
                             p.addLast(new GetRoomListHandler());
                             p.addLast(new GetRoomInfoHandler());
                             p.addLast(new LeaveRoomHandler());
+                            p.addLast(new StartBattleHandler());
                         }
                     });
 
